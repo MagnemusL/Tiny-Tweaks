@@ -2,6 +2,7 @@ package net.smazeee.tinytweaks;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -24,6 +25,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.smazeee.tinytweaks.init.ModBlockEntities;
 import net.smazeee.tinytweaks.init.ModBlocks;
 import net.smazeee.tinytweaks.init.ModItems;
+import net.smazeee.tinytweaks.screen.MinerScreen;
 import net.smazeee.tinytweaks.screen.ModMenuTypes;
 import org.slf4j.Logger;
 
@@ -47,7 +49,7 @@ public class TinyTweaks {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-
+        MenuScreens.register(ModMenuTypes.MINER_MENU.get(), MinerScreen::new);
     }
 
     @SubscribeEvent
