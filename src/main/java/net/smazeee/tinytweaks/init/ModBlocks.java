@@ -10,6 +10,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.smazeee.tinytweaks.TinyTweaks;
+import net.smazeee.tinytweaks.init.block.DuperBlock;
+import net.smazeee.tinytweaks.init.block.MinerBlock;
 
 import java.util.function.Supplier;
 
@@ -19,7 +21,11 @@ public class ModBlocks {
 
 
     public static final RegistryObject<Block> MINER = registerBlock("miner",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
+            () -> new MinerBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
+
+    public static final RegistryObject<Block> DUPER = registerBlock("duper",
+            () -> new DuperBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)));
+
 
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {

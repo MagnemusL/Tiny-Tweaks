@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "tinytweaks:block/miner"
+    }
+  }
+}

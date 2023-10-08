@@ -15,11 +15,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import net.smazeee.tinytweaks.init.ModBlockEntities;
-import net.smazeee.tinytweaks.init.blockentities.MinerBlockEntity;
+import net.smazeee.tinytweaks.init.blockentities.DuperBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
-public class MinerBlock extends BaseEntityBlock {
-    public MinerBlock(Properties p_49224_) {
+public class DuperBlock extends BaseEntityBlock {
+    public DuperBlock(Properties p_49224_) {
         super(p_49224_);
     }
 
@@ -32,8 +32,8 @@ public class MinerBlock extends BaseEntityBlock {
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
         if (pState.getBlock() != pNewState.getBlock()) {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof MinerBlockEntity) {
-                ((MinerBlockEntity) blockEntity).drops();
+            if (blockEntity instanceof DuperBlockEntity) {
+                ((DuperBlockEntity) blockEntity).drops();
             }
         }
     }
@@ -42,8 +42,8 @@ public class MinerBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (!pLevel.isClientSide) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
-            if (entity instanceof MinerBlockEntity) {
-                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (MinerBlockEntity)entity, pPos);
+            if (entity instanceof DuperBlockEntity) {
+                NetworkHooks.openScreen(((ServerPlayer)pPlayer), (DuperBlockEntity)entity, pPos);
             }
             else {
                 throw new IllegalStateException("Our Container provider is missing!");
@@ -56,12 +56,12 @@ public class MinerBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new MinerBlockEntity(pos, state);
+        return new DuperBlockEntity(pos, state);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, ModBlockEntities.MINER_BE.get(), MinerBlockEntity::tick);
+        return createTickerHelper(type, ModBlockEntities.DUPER_BE.get(), DuperBlockEntity::tick);
     }
 }

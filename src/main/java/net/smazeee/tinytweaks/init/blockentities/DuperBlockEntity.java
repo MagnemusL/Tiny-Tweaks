@@ -1,6 +1,5 @@
 package net.smazeee.tinytweaks.init.blockentities;
 
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,10 +15,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -29,14 +25,11 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.smazeee.tinytweaks.init.ModBlockEntities;
-import net.smazeee.tinytweaks.screen.MinerMenu;
+import net.smazeee.tinytweaks.screen.DuperMenu;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-import java.util.Random;
-
-public class MinerBlockEntity extends BlockEntity implements MenuProvider {
+public class DuperBlockEntity extends BlockEntity implements MenuProvider {
     private final ItemStackHandler itemHandler = new ItemStackHandler(2) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -57,8 +50,8 @@ public class MinerBlockEntity extends BlockEntity implements MenuProvider {
     protected final ContainerData data;
     private int i = 0;
 
-    public MinerBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.MINER_BE.get(), pPos, pBlockState);
+    public DuperBlockEntity(BlockPos pPos, BlockState pBlockState) {
+        super(ModBlockEntities.DUPER_BE.get(), pPos, pBlockState);
         this.data = new ContainerData() {
             @Override
             public int get(int pIndex) {
@@ -90,13 +83,13 @@ public class MinerBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public Component getDisplayName() {
-            return Component.literal("Miner");
+            return Component.literal("Duper");
         }
 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return new MinerMenu(pContainerId, pPlayerInventory, this, this.data);
+        return new DuperMenu(pContainerId, pPlayerInventory, this, this.data);
     }
 
     @Override
@@ -144,41 +137,27 @@ public class MinerBlockEntity extends BlockEntity implements MenuProvider {
         return super.serializeNBT();
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, MinerBlockEntity entity) {
+    public static void tick(Level level, BlockPos pos, BlockState state, DuperBlockEntity entity) {
         entity.i++;
         Item item = entity.itemHandler.getStackInSlot(0).copy().getItem();
         RecipeWrapper inventory = new RecipeWrapper(entity.itemHandler);
         if(item != Items.AIR) {
-        if(!level.isClientSide) {
-            if (item == Items.RAW_IRON) {
-                mine(inventory, Items.RAW_IRON, entity, level, pos, state);
+            if (!level.isClientSide) {
+                dupe(inventory, item, entity, level, pos, state);
             }
-            if (item == Items.RAW_COPPER) {
-                mine(inventory, Items.RAW_COPPER, entity, level, pos, state);
-            }
-            if (item == Items.RAW_GOLD) {
-                mine(inventory, Items.RAW_GOLD, entity, level, pos, state);
-            }
-            if (item == Items.ANDESITE) {
-                mine(inventory, Items.ANDESITE, entity, level, pos, state);
-            }
-            if (item == AllItems.RAW_ZINC.get()) {
-                mine(inventory, AllItems.RAW_ZINC.get(), entity, level, pos, state);
-            }
-        }
         }
     }
 
-    public static void mine(RecipeWrapper inventory, Item item, MinerBlockEntity entity, Level level, BlockPos pos, BlockState state) {
-            setChanged(level, pos, state);
-            int x = inventory.getItem(1).getCount();
-                if (x <= 0) {
-                    entity.itemHandler.setStackInSlot(1, new ItemStack(item));
-                } else if (entity.itemHandler.getStackInSlot(1).getMaxStackSize() > entity.itemHandler.getStackInSlot(1).getCount()) {
-                    if(entity.i > 50) {
-                        entity.i = 0;
-                        inventory.getItem(1).setCount(inventory.getItem(1).getCount() + 1);
-                    }
+    public static void dupe(RecipeWrapper inventory, Item item, DuperBlockEntity entity, Level level, BlockPos pos, BlockState state) {
+        setChanged(level, pos, state);
+        int x = inventory.getItem(1).getCount();
+        if (x <= 0) {
+            entity.itemHandler.setStackInSlot(1, new ItemStack(item));
+        } else if (entity.itemHandler.getStackInSlot(1).getMaxStackSize() > entity.itemHandler.getStackInSlot(1).getCount()) {
+            if(entity.i > 50) {
+                entity.i = 0;
+                inventory.getItem(1).setCount(inventory.getItem(1).getCount() + 1);
+            }
         }
     }
 }

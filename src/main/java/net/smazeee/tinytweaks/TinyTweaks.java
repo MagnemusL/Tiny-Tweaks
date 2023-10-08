@@ -25,6 +25,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.smazeee.tinytweaks.init.ModBlockEntities;
 import net.smazeee.tinytweaks.init.ModBlocks;
 import net.smazeee.tinytweaks.init.ModItems;
+import net.smazeee.tinytweaks.screen.DuperScreen;
 import net.smazeee.tinytweaks.screen.MinerScreen;
 import net.smazeee.tinytweaks.screen.ModMenuTypes;
 import org.slf4j.Logger;
@@ -50,6 +51,7 @@ public class TinyTweaks {
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         MenuScreens.register(ModMenuTypes.MINER_MENU.get(), MinerScreen::new);
+        MenuScreens.register(ModMenuTypes.DUPER_MENU.get(), DuperScreen::new);
     }
 
     @SubscribeEvent
